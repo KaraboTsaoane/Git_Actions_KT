@@ -7,5 +7,5 @@ jobs:
 
     steps:
       - name: Output event details
-        run: echo "${{ to Json(github.event) }}"
+        run: echo "${{ toJson(github.event) }}"
      
