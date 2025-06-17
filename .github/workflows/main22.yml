@@ -17,14 +17,6 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v4
 
-      - name: Verify SQL Server tools
-        run: |
-          if ! command -v sqlcmd &> /dev/null; then
-            echo "sqlcmd is not installed on the self-hosted runner. Please install SQL Server command-line tools."
-            exit 1
-          fi
-          sqlcmd -? | head -n 1
-
       - name: Run SQL Script
         run: |
           sqlcmd -S ${{ secrets.SQL_SERVER_HOST }} -U ${{ secrets.SQL_SERVER_USER }} -P ${{ secrets.SQL_SERVER_PASSWORD }} -i CreateDatabaseProject.sql
