@@ -1,29 +1,27 @@
 name: Create Timesheet Database
 
 on:
-  workflow_dispatch:     # You can manually trigger this workflow from GitHub UI
+  workflow_dispatch:
   push:
     branches:
-      - main            # Or your default branch
+      - main
 
 jobs:
   create-db:
     runs-on: self-hosted
 
     env:
-       SQL_SERVER: ${{ secrets.SQL_SERVER }}
-       SQL_USERNAME: ${{ secrets.SQL_USERNAME }}
-       SQL_PASSWORD: ${{ secrets.SQL_PASSWORD }}
-       SQL_SCRIPT_PATH: Timesheet/SqlScripts/CreateDatabaseProject.sql
+      SQL_SERVER: ${{ secrets.SQL_SERVER }}
+      SQL_USERNAME: ${{ secrets.SQL_USERNAME }}
+      SQL_PASSWORD: ${{ secrets.SQL_PASSWORD }}
+      SQL_SCRIPT_PATH: Timesheet/SqlScripts/CreateDatabaseProject.sql
 
     steps:
       - name: Checkout repository
         uses: actions/checkout@v3
 
       - name: Run SQL script to create database and tables
-        shell: bash
+        shell: pwsh
         run: |
-          echo "Running SQL script to create database and tables..."
-
-          sqlcmd -S $SQL_SERVER -U $SQL_USERNAME -P $SQL_PASSWORD -i $SQL_SCRIPT_PATH
-
+          Write-Host "Running SQL script to create database and tables..."
+          sqlcmd -S $Env:SQL_SERVER -U $Env:SQL_USERNAME -P $Env:SQL_PASSWORD -i $Env:SQL_SCRIPT_PATH
