@@ -21,7 +21,7 @@ jobs:
         uses: actions/checkout@v3
 
       - name: Run SQL script to create database and tables
-        shell: pwsh
+        shell: powershell
         run: |
           Write-Host "Running SQL script to create database and tables..."
           sqlcmd -S $Env:SQL_SERVER -U $Env:SQL_USERNAME -P $Env:SQL_PASSWORD -i $Env:SQL_SCRIPT_PATH
