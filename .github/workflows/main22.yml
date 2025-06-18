@@ -14,6 +14,7 @@ jobs:
       - name: Deploy SSIS Project (.ispac)
         env:
           SQL_SERVER: ${{ secrets.SQL_SERVER }}
+        shell: pwsh
         run: |
           echo "Deploying SSIS project..."
 
@@ -27,15 +28,23 @@ jobs:
             exit 1
           }
 
-          & "C:\Program Files (x86)\Microsoft SQL Server\160\DTS\Binn\ISDeploymentWizard.exe" `
-            /Silent `
-            /SourcePath:"$ispacPath" `
-            /DestinationServer:"$env:SQL_SERVER" `
-            /DestinationPath:"/SSISDB/MyPackageDemos/TimeSheet"
+          $deployArgs = @(
+            "/Silent",
+            "/SourcePath:`"$ispacPath`"",
+            "/DestinationServer:`"$env:SQL_SERVER`"",
+            "/DestinationPath:""/SSISDB/MyPackageDemos/TimeSheet"""
+          )
 
-          if ($LASTEXITCODE -ne 0) {
-            Write-Error "Deployment failed with exit code $LASTEXITCODE"
-            exit $LASTEXITCODE
+          $process = Start-Process `
+            -FilePath "C:\Program Files (x86)\Microsoft SQL Server\160\DTS\Binn\ISDeploymentWizard.exe" `
+            -ArgumentList $deployArgs `
+            -Wait `
+            -PassThru `
+            -NoNewWindow
+
+          if ($process.ExitCode -ne 0) {
+            Write-Error "Deployment failed with exit code $($process.ExitCode)"
+            exit $process.ExitCode
           }
 
           echo "SSIS project deployed successfully."
