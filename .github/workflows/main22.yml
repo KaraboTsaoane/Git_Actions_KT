@@ -1,36 +1,29 @@
-name: Deploy SSIS Project
-
-on:
-  workflow_dispatch:
-
-jobs:
-  deploy-ssis-project:
-    runs-on: [self-hosted, windows]
-
-    steps:
-      - name: Checkout code
-        uses: actions/checkout@v3
-
-      - name: Deploy SSIS Project (.ispac)
+       name: Deploy SSIS Project (.ispac)
         env:
           SQL_SERVER: ${{ secrets.SQL_SERVER }}
-
         run: |
           echo "Deploying SSIS project..."
-          # Adjust this path to match your actual .ispac location
           $ispacPath = "Timesheet\bin\Development\TimeSheet.ispac"
+
+          Write-Host "Current working directory: $(Get-Location)"
+          Write-Host "Checking ISPAC at path: $ispacPath"
           
-          # Confirm that the file exists
           if (!(Test-Path $ispacPath)) {
             Write-Error "ISPAC file not found at $ispacPath"
             exit 1
           }
 
-          # Run the deployment wizard silently
           & "C:\Program Files (x86)\Microsoft SQL Server\160\DTS\Binn\ISDeploymentWizard.exe" `
             /Silent `
             /SourcePath:"$ispacPath" `
             /DestinationServer:"$env:SQL_SERVER" `
-            /DestinationPath:"/SSISDB/MyPackageDemos/TimeSheet"
+            /DestinationPath:"/SSISDB/MyPackageDemos/TimeSheet" `
+            /LogPath:"deploy_log.txt"
+
+          if ($LASTEXITCODE -ne 0) {
+            Write-Error "Deployment failed with exit code $LASTEXITCODE"
+            Get-Content deploy_log.txt
+            exit $LASTEXITCODE
+          }
 
           echo "SSIS project deployed successfully."
