@@ -13,13 +13,13 @@ jobs:
 
       - name: Run PowerShell script to create jobs
         env:
-          SQL_SERVER: ${{ secrets.SQL_SERVER }}
+          SQL_SERVER: ${{ secrets.SQL_SERVER2 }}
           SQL_USERNAME: ${{ secrets.SQL_USERNAME }}
           SQL_PASSWORD: ${{ secrets.SQL_PASSWORD }}
         shell: powershell
         run: |
           $ErrorActionPreference = "Stop"
           .\Timesheet\SqlScripts\create_jobs.ps1 `
-            -SqlServer $env:SQL_SERVER `
+            -SqlServer $env:SQL_SERVER2 `
             -Username $env:SQL_USERNAME `
             -Password $env:SQL_PASSWORD
