@@ -1,9 +1,9 @@
 --Creating database
-CREATE DATABASE TimesheetDB2;
+CREATE DATABASE TimesheetDB;
 GO
 
 -- Use the database
-USE TimesheetDB2;
+USE TimesheetDB;
 GO
 
 -- Stored procedure to create the tables
