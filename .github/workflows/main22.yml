@@ -17,10 +17,9 @@ jobs:
 
         run: |
           echo "Deploying SSIS project..."
-
           # Adjust this path to match your actual .ispac location
-          $ispacPath = "Timesheet\bin\Development\AutomatedTimesheet.ispac"
-
+          $ispacPath = "Timesheet\SSIS_Packages\bin\Development\AutomatedTimesheet.ispac"
+          
           # Confirm that the file exists
           if (!(Test-Path $ispacPath)) {
             Write-Error "ISPAC file not found at $ispacPath"
@@ -32,6 +31,6 @@ jobs:
             /Silent `
             /SourcePath:"$ispacPath" `
             /DestinationServer:"$env:SQL_SERVER" `
-            /DestinationPath:"SSISDB\MyPackageDemos\TimeSheet"
+            /DestinationPath:"/SSISDB/MyPackageDemos/TimeSheet"
 
           echo "SSIS project deployed successfully."
