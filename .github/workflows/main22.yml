@@ -13,7 +13,7 @@ jobs:
 
       - name: Deploy SSIS Project (.ispac)
         env:
-          SQL_SERVER: ${{ secrets.SQL_SERVER }}
+          SQL_SERVER: ${{ secrets.SQL_SERVER2 }}
         shell: powershell
         run: |
           echo "Deploying SSIS project..."
@@ -31,7 +31,7 @@ jobs:
           $deployArgs = @(
             "/Silent",
             "/SourcePath:`"$ispacPath`"",
-            "/DestinationServer:`"$env:SQL_SERVER`"",
+            "/DestinationServer:`"$env:SQL_SERVER2`"",
             "/DestinationPath:""/SSISDB/MyPackageDemos/TimeSheet"""
           )
 
