@@ -1,0 +1,30 @@
+name: Deploy SSIS Packages
+
+on:
+  workflow_dispatch:  # Manually trigger
+
+jobs:
+  deploy-ssis:
+    runs-on: [self-hosted, windows]
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      - name: Deploy SSIS Packages using dtutil
+        env:
+          SQL_SERVER: ${{ secrets.SQL_SERVER }}
+          SQL_USERNAME: ${{ secrets.SQL_USERNAME }}
+          SQL_PASSWORD: ${{ secrets.SQL_PASSWORD }}
+
+        run: |
+          echo "Deploying SSIS packages..."
+          cd Timesheet\SSIS_Packages
+
+          # Example for deploying multiple packages (adjust paths accordingly)
+          dtutil /FILE "ExtractTimesheet2.dtsx" /DestServer $Env:SQL_SERVER /COPY SQL;"\SSISDB\MyPackageDemos\TimeSheet\ExtractTimesheet2"
+          dtutil /FILE "ExtractLeave2.dtsx" /DestServer $Env:SQL_SERVER /COPY SQL;"\SSISDB\MyPackageDemos\TimeSheet\ExtractLeave2"
+          dtutil /FILE "ExtractClientNames2.dtsx" /DestServer $Env:SQL_SERVER /COPY SQL;"\SSISDB\MyPackageDemos\TimeSheet\ExtractClientNames2"
+          dtutil /FILE "ExtractEmployeeNames2.dtsx" /DestServer $Env:SQL_SERVER /COPY SQL;"\SSISDB\MyPackageDemos\TimeSheet\ExtractEmployeeNames2"
+
+          echo "Deployment completed."
