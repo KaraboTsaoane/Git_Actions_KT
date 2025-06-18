@@ -1,30 +1,37 @@
-name: Deploy SSIS Packages
+name: Deploy SSIS Project
 
 on:
-  workflow_dispatch:  # Manually trigger
+  workflow_dispatch:
 
 jobs:
-  deploy-ssis:
+  deploy-ssis-project:
     runs-on: [self-hosted, windows]
 
-    steps: 
+    steps:
       - name: Checkout code
         uses: actions/checkout@v3
 
-      - name: Deploy SSIS Packages using dtutil
+      - name: Deploy SSIS Project (.ispac)
         env:
           SQL_SERVER: ${{ secrets.SQL_SERVER }}
-          SQL_USERNAME: ${{ secrets.SQL_USERNAME }}
-          SQL_PASSWORD: ${{ secrets.SQL_PASSWORD }}
 
         run: |
-          echo "Deploying SSIS packages..."
-          cd Timesheet\SSIS_Packages
+          echo "Deploying SSIS project..."
 
-          # Example for deploying multiple packages (adjust paths accordingly)
-          dtutil /FILE "ExtractTimesheet2.dtsx" /DestServer $Env:SQL_SERVER /COPY SQL;"\SSISDB\MyPackageDemos\TimeSheet\ExtractTimesheet2"
-          dtutil /FILE "ExtractLeave2.dtsx" /DestServer $Env:SQL_SERVER /COPY SQL;"\SSISDB\MyPackageDemos\TimeSheet\ExtractLeave2"
-          dtutil /FILE "ExtractClientNames2.dtsx" /DestServer $Env:SQL_SERVER /COPY SQL;"\SSISDB\MyPackageDemos\TimeSheet\ExtractClientNames2"
-          dtutil /FILE "ExtractEmployeeNames2.dtsx" /DestServer $Env:SQL_SERVER /COPY SQL;"\SSISDB\MyPackageDemos\TimeSheet\ExtractEmployeeNames2"
+          # Adjust this path to match your actual .ispac location
+          $ispacPath = "Timesheet\SSIS_Packages\bin\Development\AutomatedTimesheet.ispac"
 
-          echo "Deployment completed."
+          # Confirm that the file exists
+          if (!(Test-Path $ispacPath)) {
+            Write-Error "ISPAC file not found at $ispacPath"
+            exit 1
+          }
+
+          # Run the deployment wizard silently
+          & "C:\Program Files (x86)\Microsoft SQL Server\160\DTS\Binn\ISDeploymentWizard.exe" `
+            /Silent `
+            /SourcePath:"$ispacPath" `
+            /DestinationServer:"$env:SQL_SERVER" `
+            /DestinationPath:"SSISDB\MyPackageDemos\TimeSheet"
+
+          echo "SSIS project deployed successfully."
