@@ -1,9 +1,9 @@
 --Creating database
-CREATE DATABASE TimesheetDB;
+CREATE DATABASE TimesheetDB2;
 GO
 
 -- Use the database
-USE TimesheetDB;
+USE TimesheetDB2;
 GO
 
 -- Stored procedure to create the tables
@@ -106,27 +106,27 @@ EXEC CreateTimesheetTables;
 GO
 
 -- Stored procedure to drop all tables
-CREATE PROCEDURE DropTimesheetTables
-AS
-BEGIN
-    -- Drop in reverse order of dependencies
-    IF OBJECT_ID('Leave', 'U') IS NOT NULL DROP TABLE Leave;
-    IF OBJECT_ID('TimeSheetEntry', 'U') IS NOT NULL DROP TABLE TimeSheetEntry;
-    IF OBJECT_ID('Project', 'U') IS NOT NULL DROP TABLE Project;
-    IF OBJECT_ID('Client', 'U') IS NOT NULL DROP TABLE Client;
-    IF OBJECT_ID('Employee', 'U') IS NOT NULL DROP TABLE Employee;
-END;
-GO
+--CREATE PROCEDURE DropTimesheetTables
+--AS
+--BEGIN
+--    -- Drop in reverse order of dependencies
+--    IF OBJECT_ID('Leave', 'U') IS NOT NULL DROP TABLE Leave;
+--    IF OBJECT_ID('TimeSheetEntry', 'U') IS NOT NULL DROP TABLE TimeSheetEntry;
+--    IF OBJECT_ID('Project', 'U') IS NOT NULL DROP TABLE Project;
+--    IF OBJECT_ID('Client', 'U') IS NOT NULL DROP TABLE Client;
+--    IF OBJECT_ID('Employee', 'U') IS NOT NULL DROP TABLE Employee;
+--END;
+--GO
 
-ALTER PROCEDURE DropTimesheetTables
-AS
-BEGIN
-    -- Drop in reverse order of dependencies
-    IF OBJECT_ID('Leave', 'U') IS NOT NULL DROP TABLE Leave;
-    IF OBJECT_ID('TimeSheetEntry', 'U') IS NOT NULL DROP TABLE TimeSheetEntry;
-    IF OBJECT_ID('Project', 'U') IS NOT NULL DROP TABLE Project;
-    IF OBJECT_ID('Client', 'U') IS NOT NULL DROP TABLE Client;
-    IF OBJECT_ID('Employee', 'U') IS NOT NULL DROP TABLE Employee;
-END;
+--ALTER PROCEDURE DropTimesheetTables
+--AS
+--BEGIN
+--    -- Drop in reverse order of dependencies
+--    IF OBJECT_ID('Leave', 'U') IS NOT NULL DROP TABLE Leave;
+--    IF OBJECT_ID('TimeSheetEntry', 'U') IS NOT NULL DROP TABLE TimeSheetEntry;
+--    IF OBJECT_ID('Project', 'U') IS NOT NULL DROP TABLE Project;
+--    IF OBJECT_ID('Client', 'U') IS NOT NULL DROP TABLE Client;
+--    IF OBJECT_ID('Employee', 'U') IS NOT NULL DROP TABLE Employee;
+--END;
 
-EXEC DropTimesheetTables;
+--EXEC DropTimesheetTables;
