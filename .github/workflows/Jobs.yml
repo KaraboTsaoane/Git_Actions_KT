@@ -13,7 +13,7 @@ jobs:
 
       - name: Run PowerShell script to create jobs
         env:
-          SQL_SERVER: ${{ secrets.SQL_SERVER2 }}
+          SQL_SERVER2: ${{ secrets.SQL_SERVER2 }}
           SQL_USERNAME: ${{ secrets.SQL_USERNAME }}
           SQL_PASSWORD: ${{ secrets.SQL_PASSWORD }}
         shell: powershell
