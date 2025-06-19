@@ -89,12 +89,7 @@ jobs:
         run: |
           echo "Creating SQL Agent jobs..."
           $ErrorActionPreference = "Stop"
-          $scriptPath = "Timesheet\SqlScripts\create_jobs.ps1"
-          if (!(Test-Path $scriptPath)) {
-            Write-Error "Job creation script not found at $scriptPath"
-            exit 1
-          }
-          .\$scriptPath `
+          .\Timesheet\SqlScripts\create_jobs.ps1 `
             -SqlServer $env:SQL_SERVER2 `
             -Username $env:SQL_USERNAME `
-            -Password $env:SQL_PASSWORD
+            -Password $env:SQL_PASSWORD 
